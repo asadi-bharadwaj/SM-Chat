@@ -33,7 +33,7 @@ public class ChatController {
     @GetMapping("/chat/threads/{userId}")
     @ResponseBody
     public List<ChatMessage> getUserThreads(@PathVariable String userId) {
-        return repository.findBySenderIdOrRecipientIdOrderByTimestampDesc(userId, userId);
+        return repository.findInboxThreads(userId);
     }
 
     @PutMapping("/chat/read/{threadId}/{recipientId}")
