@@ -1,0 +1,5 @@
+com/SM/ChatService/ChatServiceApplication.class
+com/SM/ChatService/repository/ChatMessageRepository.class
+com/SM/ChatService/controller/ChatController.class
+com/SM/ChatService/config/WebSocketConfig.class
+com/SM/ChatService/entity/ChatMessage.class
