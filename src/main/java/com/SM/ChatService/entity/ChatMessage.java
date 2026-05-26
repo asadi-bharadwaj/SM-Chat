@@ -1,9 +1,12 @@
 package com.SM.ChatService.entity;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
+import org.springframework.data.mongodb.core.index.CompoundIndexes;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
@@ -26,16 +29,12 @@ import java.time.LocalDateTime;
 public class ChatMessage {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
-    @Column(nullable = false)
     private String senderId;
 
-    @Column(nullable = false)
     private String recipientId;
 
-    @Column(nullable = false, length = 2000)
     private String content;
 
     private String type = "TEXT"; // TEXT, VOICE, CALL
@@ -47,10 +46,8 @@ public class ChatMessage {
     @Column(nullable = false)
     private LocalDateTime timestamp;
 
-    @Column(nullable = false)
     private String threadId; // Unique ID for the conversation between two users
 
-    @Column(name = "is_read", nullable = false)
     private Boolean isRead = false;
 
     @Column(columnDefinition = "TEXT")
