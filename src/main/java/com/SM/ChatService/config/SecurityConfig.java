@@ -34,7 +34,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Value("${internal.api.secret:super-secret-internal-key}")
+    @Value("${internal.api.secret}")
     private String internalSecret;
 
     /**
