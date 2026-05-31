@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -340,5 +341,30 @@ public class ChatController {
     @SendToUser("/queue/errors")
     public String handleException(Throwable exception) {
         return exception.getMessage();
+    }
+
+    @GetMapping("/groups/{threadId}/members")
+    public List<ChatGroupMember> getGroupMembers(@PathVariable String threadId) {
+        return memberRepository.findByThreadId(threadId);
+    }
+
+    @DeleteMapping("/thread/{threadId}")
+    @Transactional
+    public ResponseEntity<?> deleteThread(@PathVariable String threadId, Principal principal) {
+        String userId = String.valueOf(getAuthenticatedUserId(principal));
+        
+        // Find all messages in the thread and delete them
+        List<ChatMessage> messages = repository.findByThreadIdOrderByTimestampAsc(threadId);
+        repository.deleteAll(messages);
+
+        if (threadId.startsWith("GROUP_")) {
+            // Check if user is the creator (optional logic), or just allow any member to delete it for now
+            List<ChatGroupMember> members = memberRepository.findByThreadId(threadId);
+            memberRepository.deleteAll(members);
+            
+            groupRepository.findByThreadId(threadId).ifPresent(groupRepository::delete);
+        }
+        
+        return ResponseEntity.ok().build();
     }
 }

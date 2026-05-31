@@ -48,7 +48,9 @@ public class WebConfig implements WebMvcConfigurer {
      * @param registry The {@link ResourceHandlerRegistry} to register the handler with.
      */
     private void exposeDirectory(String dirName, ResourceHandlerRegistry registry) {
-        Path uploadDir = Paths.get(dirName);
+        String projectRoot = System.getProperty("user.dir");
+        // user.dir is .../Chat-Service/chat-service
+        Path uploadDir = Paths.get(projectRoot).getParent().getParent().resolve(dirName).normalize();
         String uploadPath = uploadDir.toFile().getAbsolutePath();
         
         if (!uploadPath.endsWith("/")) uploadPath += "/";

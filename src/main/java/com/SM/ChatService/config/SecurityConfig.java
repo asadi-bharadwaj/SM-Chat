@@ -57,7 +57,7 @@ public class SecurityConfig {
             .httpBasic(basic -> basic.disable())
             .exceptionHandling(ex -> ex.authenticationEntryPoint(restAuthenticationEntryPoint()))
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/ws/**", "/ws-sockjs/**", "/voice-messages/**").permitAll() 
+                .requestMatchers("/ws/**", "/ws-sockjs/**", "/voice-messages/**", "/error").permitAll() 
                 .requestMatchers("/chat/purge/**").access((authentication, context) -> {
                     HttpServletRequest request = context.getRequest();
                     String secret = request.getHeader("X-Internal-Secret");
